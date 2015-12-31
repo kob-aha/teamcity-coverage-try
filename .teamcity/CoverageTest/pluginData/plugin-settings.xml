@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <versionedSettings rootId="CoverageTest_Local" enabled="true" showChanges="true" />
+  <report-tabs>
+    <build-report-tab title="Coverage" startPage="jacocoReport/index.html" />
+  </report-tabs>
+</settings>
+

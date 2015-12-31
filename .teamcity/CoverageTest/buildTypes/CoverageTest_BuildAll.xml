@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="523e47c6-fead-4694-93cc-c4156a5f222f" xsi:noNamespaceSchemaLocation="http://www.jetbrains.com/teamcity/schemas/9.0/project-config.xsd">
+  <name>Build all</name>
+  <description />
+  <settings>
+    <disabled-settings>
+      <setting-ref ref="RUNNER_2" />
+    </disabled-settings>
+    <parameters />
+    <build-runners>
+      <runner id="RUNNER_1" name="Build all" type="gradle-runner">
+        <parameters>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="ui.gradleRunner.gradle.tasks.names" value="clean build jacocoTestReport -i" />
+          <param name="ui.gradleRunner.gradle.wrapper.useWrapper" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_2" name="Import coverage report" type="simpleRunner">
+        <parameters>
+          <param name="script.content" value="echo &quot;##teamcity[importData type='javaCoverage' tool='jacoco' path='%teamcity.build.checkoutDir%/build/reports/jacoco/test/jacocoTestReport.xml']&quot;" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="CoverageTest_Local" />
+    </vcs-settings>
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+
