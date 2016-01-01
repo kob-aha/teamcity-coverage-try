@@ -5,11 +5,10 @@ ext {
     jacocoIncludeList = ['org.edu.ka.*']
     jacocoReportDir = "$buildDir/reports/jacoco"
     jacocoDestFile = "$buildDir/jacoco/jacocoTest.exec"
-//    jacocoClassDumps = "$buildDir/jacoco/classpathdumps"
+    jacocoClassDumps = "$buildDir/jacoco/classpathdumps"
 }
 
 jacoco {
-//    toolVersion = '0.7.5.201505241946'
     toolVersion = '0.7.4.201502262128'
     reportsDir = file(jacocoReportDir)
 }
@@ -19,7 +18,7 @@ test {
         includes = jacocoIncludeList
         excludes = jacocoExcludeList
         destinationFile = file(jacocoDestFile)
-//        classDumpFile = file(jacocoClassDumps)
+        classDumpFile = file(jacocoClassDumps)
     }
 }
 
@@ -27,17 +26,20 @@ task teamCityCodeCoverage(description: 'Used by TeamCity to generate code covera
     doFirst {
 
         def relativeDestFile = jacocoDestFile - "${project.projectDir}${File.separatorChar}"
+        def relativeClassPath = jacocoClassDumps - "${project.projectDir}${File.separatorChar}"
 
         def includeListStr = jacocoIncludeList.join(" ")
         def excludeListStr = jacocoExcludeList.join(" ")
 
-        println("##teamcity[jacocoReport dataPath='${relativeDestFile}' includes='${includeListStr}' excludes='${excludeListStr}']")
+        println("##teamcity[jacocoReport dataPath='${relativeDestFile}' includes='${includeListStr}' excludes='${excludeListStr}' classpath='+:${relativeClassPath}']")
     }
+
+    mustRunAfter build
 }
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.enabled false
         csv.enabled false
         html.enabled true
     }
