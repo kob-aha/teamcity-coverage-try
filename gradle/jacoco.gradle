@@ -5,10 +5,12 @@ ext {
     jacocoIncludeList = ['org.edu.ka.*']
     jacocoReportDir = "$buildDir/reports/jacoco"
     jacocoDestFile = "$buildDir/jacoco/jacocoTest.exec"
+//    jacocoClassDumps = "$buildDir/jacoco/classpathdumps"
 }
 
 jacoco {
-    toolVersion = '0.7.5.201505241946'
+//    toolVersion = '0.7.5.201505241946'
+    toolVersion = '0.7.1.201405082137'
     reportsDir = file(jacocoReportDir)
 }
 
@@ -17,6 +19,7 @@ test {
         includes = jacocoIncludeList
         excludes = jacocoExcludeList
         destinationFile = file(jacocoDestFile)
+//        classDumpFile = file(jacocoClassDumps)
     }
 }
 
