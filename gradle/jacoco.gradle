@@ -2,7 +2,7 @@ apply plugin: 'jacoco'
 
 ext {
     jacocoExcludeList = []
-    jacocoIncludeList = []
+    jacocoIncludeList = ['org.edu.ka.*']
     jacocoReportDir = "$buildDir/reports/jacoco"
     jacocoDestFile = "$buildDir/jacoco/jacocoTest.exec"
 }
