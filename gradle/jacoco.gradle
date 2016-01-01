@@ -1,0 +1,39 @@
+apply plugin: 'jacoco'
+
+ext {
+    jacocoExcludeList = []
+    jacocoIncludeList = []
+    jacocoReportDir = "$buildDir/reports/jacoco"
+    jacocoDestFile = "$buildDir/jacoco/jacocoTest.exec"
+}
+
+jacoco {
+    toolVersion = '0.7.5.201505241946'
+    reportsDir = file(jacocoReportDir)
+}
+
+test {
+    jacoco {
+        includes = jacocoIncludeList
+        excludes = jacocoExcludeList
+        destinationFile = file(jacocoDestFile)
+    }
+}
+
+task teamCityCodeCoverage(description: 'Used by TeamCity to generate code coverage report using all parameters defined in the build file') {
+    doFirst {
+
+        def includeListStr = jacocoIncludeList.join(" ")
+        def excludeListStr = jacocoExcludeList.join(" ")
+
+        println("##teamcity[jacocoReport dataPath='${jacocoDestFile}' includes='${includeListStr}' excludes='${excludeListStr}']")
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+    }
+}
