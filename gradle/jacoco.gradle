@@ -23,10 +23,12 @@ test {
 task teamCityCodeCoverage(description: 'Used by TeamCity to generate code coverage report using all parameters defined in the build file') {
     doFirst {
 
+        def relativeDestFile = jacocoDestFile - "${project.projectDir}${File.separatorChar}"
+
         def includeListStr = jacocoIncludeList.join(" ")
         def excludeListStr = jacocoExcludeList.join(" ")
 
-        println("##teamcity[jacocoReport dataPath='${jacocoDestFile}' includes='${includeListStr}' excludes='${excludeListStr}']")
+        println("##teamcity[jacocoReport dataPath='${relativeDestFile}' includes='${includeListStr}' excludes='${excludeListStr}']")
     }
 }
 
