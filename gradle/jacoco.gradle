@@ -1,7 +1,7 @@
 apply plugin: 'jacoco'
 
 ext {
-    jacocoExcludeList = []
+    jacocoExcludeList = ['**/*/ExcludedService.class']
     jacocoIncludeList = ['org.edu.ka.*']
     jacocoReportDir = "$buildDir/reports/jacoco"
     jacocoDestFile = "$buildDir/jacoco/jacocoTest.exec"
@@ -16,7 +16,6 @@ jacoco {
 test {
     jacoco {
         includes = jacocoIncludeList
-        excludes = jacocoExcludeList
         destinationFile = file(jacocoDestFile)
         classDumpFile = file(jacocoClassDumps)
     }
@@ -42,5 +41,13 @@ jacocoTestReport {
         xml.enabled false
         csv.enabled false
         html.enabled true
+    }
+
+    // Due to https://issues.gradle.org/browse/GRADLE-2955 we need this workaround to exclude the files
+    // instead of using the plugin's "excludes" property
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, excludes: jacocoExcludeList)
+        })
     }
 }
